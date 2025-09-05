@@ -5,11 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public float MoveSpeed;
     public InputAction MoveAction;
+    Rigidbody2D rb2D;
+    Vector2 move;
     void Start()
     {
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 10;
+        rb2D = GetComponent<Rigidbody2D>();
         MoveAction.Enable();
     }
 
@@ -17,11 +21,9 @@ public class PlayerController : MonoBehaviour
     {
         // if (Keyboard.current.upArrowKey.isPressed)
 
-        Vector2 move = MoveAction.ReadValue<Vector2>();
-        Debug.Log(move);
         Vector2 position =
-            (Vector2)transform.position
-            + move * 3.0f * Time.deltaTime;
-        transform.position = position;
+            (Vector2)rb2D.position
+            + move * MoveSpeed * Time.deltaTime;
+        rb2D.position = position;
     }
 }
