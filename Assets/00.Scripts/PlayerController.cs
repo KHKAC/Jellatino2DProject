@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float MoveSpeed;
+    public float MoveSpeed = 3.0f;
     public InputAction MoveAction;
     Rigidbody2D rb2D;
     Vector2 move;
@@ -19,11 +19,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // if (Keyboard.current.upArrowKey.isPressed)
+        move = MoveAction.ReadValue<Vector2>();
+        Debug.Log(move);
+    }
 
-        Vector2 position =
-            (Vector2)rb2D.position
-            + move * MoveSpeed * Time.deltaTime;
-        rb2D.position = position;
+
+    void FixedUpdate()
+    {
+        Vector2 position = (Vector2)rb2D.position + move * MoveSpeed * Time.deltaTime;
+        rb2D.MovePosition(position);
     }
 }

@@ -5948,6 +5948,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jellatino
       objectReference: {fileID: 0}
+    - target: {fileID: 2287816609425849591, guid: 145957f36bc0ea449a79f449176b48ff, type: 3}
+      propertyPath: MoveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2849198587338321897, guid: 145957f36bc0ea449a79f449176b48ff, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
