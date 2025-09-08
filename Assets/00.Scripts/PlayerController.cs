@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +14,21 @@ public class PlayerController : MonoBehaviour
     const float MAX_SPEED = 10.0f;
     const float START_SPEED = 3.0f;
     #endregion
-    #region public
+
+    #region Public
     public InputAction MoveAction;
     [Range(MIN_HEALTH, MAX_HEALTH)] public int maxHealth = START_HEALTH;
     [Range(MIN_SPEED, MAX_SPEED)] public float MoveSpeed = START_SPEED;
     #endregion
-    #region private
+
+    #region Property
+    public int CurrentHealth
+    {
+        get { return currentHealth; }
+    }
+    #endregion
+
+    #region Private
     int currentHealth;
     Rigidbody2D rb2D;
     Vector2 move;
@@ -31,7 +41,8 @@ public class PlayerController : MonoBehaviour
         //Application.targetFrameRate = 10;
         MoveAction.Enable();
         rb2D = GetComponent<Rigidbody2D>();
-        currentHealth = maxHealth;
+        currentHealth = 1;  //maxHealth;
+        Debug.Log($"{currentHealth} / {maxHealth}");
     }
 
     void Update()
@@ -47,7 +58,7 @@ public class PlayerController : MonoBehaviour
         rb2D.MovePosition(position);
     }
 
-    void ChangeHealth(int amount)
+    public void ChangeHealth(int amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, MIN_HEALTH, maxHealth);
         Debug.Log($"{currentHealth} / {maxHealth}");
