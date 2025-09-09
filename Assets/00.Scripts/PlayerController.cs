@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public InputAction MoveAction;
     [Range(MIN_HEALTH, MAX_HEALTH)] public int maxHealth = START_HEALTH;
     [Range(MIN_SPEED, MAX_SPEED)] public float MoveSpeed = START_SPEED;
+    public float timeInvincible = 2.0f;
+    public float timeHealingZone = 1.5f;
     #endregion
 
     #region Property
@@ -32,6 +34,10 @@ public class PlayerController : MonoBehaviour
     int currentHealth;
     Rigidbody2D rb2D;
     Vector2 move;
+    bool isInvincible;
+    bool isHealing;
+    float damageCooldown;
+    float healingCooldown;
     #endregion
 
     #region Method
@@ -41,7 +47,7 @@ public class PlayerController : MonoBehaviour
         //Application.targetFrameRate = 10;
         MoveAction.Enable();
         rb2D = GetComponent<Rigidbody2D>();
-        currentHealth = 1;  //maxHealth;
+        currentHealth = maxHealth;
         Debug.Log($"{currentHealth} / {maxHealth}");
     }
 
@@ -49,6 +55,22 @@ public class PlayerController : MonoBehaviour
     {
         move = MoveAction.ReadValue<Vector2>();
         //Debug.Log(move);
+        if (isInvincible)
+        {
+            damageCooldown -= Time.deltaTime;
+            if (damageCooldown < 0)
+            {
+                isInvincible = false;
+            }
+        }
+        if (isHealing)
+        {
+            healingCooldown -= Time.deltaTime;
+            if (healingCooldown < 0)
+            {
+                isHealing = false;
+            }
+        }
     }
 
 
@@ -60,6 +82,26 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeHealth(int amount)
     {
+        if (amount < 0)
+        {
+            if (isInvincible)
+            {
+                return;
+            }
+            isInvincible = true;
+            damageCooldown = timeInvincible;
+        }
+
+        if (isHealing)
+        {
+            return;
+        }
+        else
+        {
+            isHealing = true;
+            healingCooldown = timeHealingZone;
+        }
+        
         currentHealth = Mathf.Clamp(currentHealth + amount, MIN_HEALTH, maxHealth);
         Debug.Log($"{currentHealth} / {maxHealth}");
     }
