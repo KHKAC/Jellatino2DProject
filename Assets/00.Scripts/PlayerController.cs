@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour
         MoveAction.Enable();
         rb2D = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
-        Debug.Log($"{currentHealth} / {maxHealth}");
     }
 
     void Update()
