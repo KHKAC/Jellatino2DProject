@@ -101,9 +101,10 @@ public class PlayerController : MonoBehaviour
             isHealing = true;
             healingCooldown = timeHealingZone;
         }
-        
+
         currentHealth = Mathf.Clamp(currentHealth + amount, MIN_HEALTH, maxHealth);
-        Debug.Log($"{currentHealth} / {maxHealth}");
+        // Debug.Log($"{currentHealth} / {maxHealth}");
+        UIHandler.instance.SetHealthValue(currentHealth / (float) maxHealth);
     }
     #endregion
 }

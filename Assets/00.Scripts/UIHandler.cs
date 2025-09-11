@@ -5,7 +5,15 @@ using UnityEngine.UIElements;
 
 public class UIHandler : MonoBehaviour
 {
+    // 기본적인 싱글톤 패턴(여기에서 더 안전하게 쓸 수 있는 방법이 존재함. 이건 나중에)
+    // [public static UIHandler instance { get; private set; }] + [void Awake() {instance = this;}]
+    public static UIHandler instance { get; private set; }
     VisualElement mHealthBar;
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         // UIDocument uiDocument = GetComponent<UIDocument>();
