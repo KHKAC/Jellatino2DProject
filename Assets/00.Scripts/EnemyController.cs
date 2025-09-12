@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region private
+    Animator animator;
     Rigidbody2D rb2d;
     float timer;
     int direction = 1;
@@ -20,6 +21,7 @@ public class EnemyController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         timer = changeTime;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -29,6 +31,11 @@ public class EnemyController : MonoBehaviour
         {
             direction = -direction;
             timer = changeTime;
+            //vertical = Random.Range(0, 100) > 50 ? true : false;
+            if (direction > 0)
+            {
+                vertical = Random.Range(0, 100) > 49;
+            }
         }
     }
 
@@ -38,10 +45,14 @@ public class EnemyController : MonoBehaviour
         if (vertical)
         {
             position.y += speed * direction * Time.deltaTime;
+            animator.SetFloat("MoveX", 0);
+            animator.SetFloat("MoveY", direction);
         }
         else
         {
             position.x += speed * direction * Time.deltaTime;
+            animator.SetFloat("MoveX", direction);
+            animator.SetFloat("MoveY", 0);
         }
         rb2d.MovePosition(position);
     }
