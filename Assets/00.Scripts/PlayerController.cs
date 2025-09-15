@@ -24,10 +24,11 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Property
-    public int CurrentHealth
-    {
-        get { return currentHealth; }
-    }
+    // public int CurrentHealth
+    // {
+    //     get { return currentHealth; }
+    // }
+    public int CurrentHealth => currentHealth;
     #endregion
 
     #region Private
@@ -38,6 +39,8 @@ public class PlayerController : MonoBehaviour
     bool isHealing;
     float damageCooldown;
     float healingCooldown;
+    Animator animator;
+    Vector2 moveDirection = new Vector2(1, 0);
     #endregion
 
     #region Method
@@ -47,12 +50,23 @@ public class PlayerController : MonoBehaviour
         //Application.targetFrameRate = 10;
         MoveAction.Enable();
         rb2D = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         currentHealth = maxHealth;
     }
 
     void Update()
     {
         move = MoveAction.ReadValue<Vector2>();
+        // if((move.x != 0.0f) || (move.y != 0.0f))
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            moveDirection.Set(move.x, move.y);
+            moveDirection.Normalize();
+        }
+        animator.SetFloat("Look X", moveDirection.x);
+        animator.SetFloat("Look Y", moveDirection.y);
+        animator.SetFloat("Speed", move.magnitude);
+
         //Debug.Log(move);
         if (isInvincible)
         {
@@ -62,6 +76,7 @@ public class PlayerController : MonoBehaviour
                 isInvincible = false;
             }
         }
+
         if (isHealing)
         {
             healingCooldown -= Time.deltaTime;
@@ -83,6 +98,7 @@ public class PlayerController : MonoBehaviour
     {
         if (amount < 0)
         {
+            animator.SetTrigger("Hit");
             if (isInvincible)
             {
                 return;
