@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: -903667736872549433}
   - component: {fileID: 8967726497300907035}
   - component: {fileID: 5050821670403638981}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Jellatino
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -193,6 +193,7 @@ MonoBehaviour:
   MoveSpeed: 3
   timeInvincible: 2
   timeHealingZone: 1.5
+  projPrefab: {fileID: 5812515226091491058, guid: 5d34f934188525b43822b00790ea2eb5, type: 3}
 --- !u!61 &-903667736872549433
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     const float MIN_SPEED = 1.0f;
     const float MAX_SPEED = 10.0f;
     const float START_SPEED = 3.0f;
+    const float LAUNCH_UP = 0.5f;
+    const float LAUNCH_FORCE = 300.0f;
     #endregion
 
     #region Public
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [Range(MIN_SPEED, MAX_SPEED)] public float MoveSpeed = START_SPEED;
     public float timeInvincible = 2.0f;
     public float timeHealingZone = 1.5f;
+    public GameObject projPrefab;
     #endregion
 
     #region Property
@@ -85,6 +88,11 @@ public class PlayerController : MonoBehaviour
                 isHealing = false;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Launch();
+        }
     }
 
 
@@ -119,7 +127,15 @@ public class PlayerController : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth + amount, MIN_HEALTH, maxHealth);
         // Debug.Log($"{currentHealth} / {maxHealth}");
-        UIHandler.instance.SetHealthValue(currentHealth / (float) maxHealth);
+        UIHandler.instance.SetHealthValue(currentHealth / (float)maxHealth);
+    }
+
+    void Launch()
+    {
+        GameObject projObject = Instantiate(projPrefab, rb2D.position + Vector2.up * LAUNCH_UP, Quaternion.identity);
+        Projectile proj = projObject.GetComponent<Projectile>();
+        proj.Launch(moveDirection, LAUNCH_FORCE);
+        animator.SetTrigger("Launch");
     }
     #endregion
 }

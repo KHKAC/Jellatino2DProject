@@ -13,13 +13,13 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Character
+  - Projectiles
+  - Tile
+  - Damage
+  - Healing
+  - Enemy
+  - Deco
   - 
   - 
   - 
