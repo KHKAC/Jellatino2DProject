@@ -15,10 +15,13 @@ public class PlayerController : MonoBehaviour
     const float START_SPEED = 3.0f;
     const float LAUNCH_UP = 0.5f;
     const float LAUNCH_FORCE = 300.0f;
+    const float RAY_UP = 0.2f;
+    const float RAY_DISTANCE = 1.5f;
     #endregion
 
     #region Public
     public InputAction MoveAction;
+    public InputAction talkAction;
     [Range(MIN_HEALTH, MAX_HEALTH)] public int maxHealth = START_HEALTH;
     [Range(MIN_SPEED, MAX_SPEED)] public float MoveSpeed = START_SPEED;
     public float timeInvincible = 2.0f;
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 10;
         MoveAction.Enable();
+        talkAction.Enable();
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
@@ -92,6 +96,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             Launch();
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            FindFriend();
         }
     }
 
@@ -136,6 +144,16 @@ public class PlayerController : MonoBehaviour
         Projectile proj = projObject.GetComponent<Projectile>();
         proj.Launch(moveDirection, LAUNCH_FORCE);
         animator.SetTrigger("Launch");
+    }
+
+    void FindFriend()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(
+            rb2D.position + Vector2.up * RAY_UP, moveDirection, RAY_DISTANCE, LayerMask.GetMask("NPC"));
+        if (hit.collider != null)
+        {
+            Debug.Log($"Raycast Hit: {hit.collider.gameObject}");
+        }
     }
     #endregion
 }

@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     Rigidbody2D rb2d;
     float timer;
     int direction = 1;
+    bool broken = true;
     #endregion
 
     void Start()
@@ -41,6 +42,11 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!broken)
+        {
+            return;
+        }
+
         Vector2 position = rb2d.position;
         if (vertical)
         {
@@ -57,12 +63,21 @@ public class EnemyController : MonoBehaviour
         rb2d.MovePosition(position);
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        PlayerController player = other.gameObject.GetComponent<PlayerController>();
         if (player != null)
         {
             player.ChangeHealth(-1);
         }
+    }
+
+    public void Fix()
+    {
+        // 적이 파괴되는 경우는 아래 주석을 사용
+        // Destroy(gameObject);
+        broken = false;
+        rb2d.simulated = false;
+        animator.SetTrigger("Fixed");
     }
 }
