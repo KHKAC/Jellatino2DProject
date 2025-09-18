@@ -152,7 +152,11 @@ public class PlayerController : MonoBehaviour
             rb2D.position + Vector2.up * RAY_UP, moveDirection, RAY_DISTANCE, LayerMask.GetMask("NPC"));
         if (hit.collider != null)
         {
-            Debug.Log($"Raycast Hit: {hit.collider.gameObject}");
+            NPCController npc = hit.collider.GetComponent<NPCController>();
+            if (npc != null)
+            {
+                UIHandler.instance.DisplayDialogue();
+            }
         }
     }
     #endregion
