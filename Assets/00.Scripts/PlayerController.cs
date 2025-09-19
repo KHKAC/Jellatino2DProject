@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     float healingCooldown;
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
+    AudioSource audioSource;
     #endregion
 
     #region Method
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
         talkAction.Enable();
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         currentHealth = maxHealth;
     }
 
@@ -165,6 +167,10 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
     #endregion
 }

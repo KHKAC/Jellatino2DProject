@@ -5,6 +5,7 @@ using UnityEngine;
 public class HealthCollectible : MonoBehaviour
 {
     [SerializeField] int increaseHealth;
+    [SerializeField] AudioClip collectedClip;
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -14,6 +15,7 @@ public class HealthCollectible : MonoBehaviour
         if ((controller != null) && (controller.CurrentHealth < controller.maxHealth))
         {
             controller.ChangeHealth(increaseHealth);
+            controller.PlaySound(collectedClip);
             Destroy(gameObject);
         }
     }
