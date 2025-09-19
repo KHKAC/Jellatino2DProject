@@ -155,7 +155,14 @@ public class PlayerController : MonoBehaviour
             NPCController npc = hit.collider.GetComponent<NPCController>();
             if (npc != null)
             {
-                UIHandler.instance.DisplayDialogue();
+                if (npc.talkStr == string.Empty)
+                {
+                    UIHandler.instance.DisplayDialogue();
+                }
+                else
+                {
+                    UIHandler.instance.DisplayDialogue(npc.talkStr);
+                }
             }
         }
     }
