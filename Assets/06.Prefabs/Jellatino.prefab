@@ -212,6 +212,9 @@ MonoBehaviour:
   timeInvincible: 2
   timeHealingZone: 1.5
   projPrefab: {fileID: 5812515226091491058, guid: 5d34f934188525b43822b00790ea2eb5, type: 3}
+  projectileClip: {fileID: 8300000, guid: c87de0cae68cdbb409eec8ba23a860d0, type: 3}
+  gotHitClip: {fileID: 8300000, guid: c7d3a91ac32abbe47a8931a8ffc37bc6, type: 3}
+  pWalkClip: {fileID: 8300000, guid: a0ccbead04ec99c4e9ddc660333de268, type: 3}
 --- !u!61 &-903667736872549433
 BoxCollider2D:
   m_ObjectHideFlags: 0

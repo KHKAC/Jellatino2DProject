@@ -16,13 +16,17 @@ public class EnemyController : MonoBehaviour
     float timer;
     int direction = 1;
     bool broken = true;
+    AudioSource audioSource;
+    [SerializeField] AudioClip fixedClip;
+    [SerializeField] AudioClip gotHitClip;
     #endregion
 
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        timer = changeTime;
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        timer = changeTime;
     }
 
     void Update()
@@ -69,6 +73,7 @@ public class EnemyController : MonoBehaviour
         if (player != null)
         {
             player.ChangeHealth(-1);
+            player.PlayGotHitSound();
         }
     }
 
@@ -79,5 +84,12 @@ public class EnemyController : MonoBehaviour
         broken = false;
         rb2d.simulated = false;
         animator.SetTrigger("Fixed");
+        audioSource.Stop();
+        audioSource.PlayOneShot(fixedClip);
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }

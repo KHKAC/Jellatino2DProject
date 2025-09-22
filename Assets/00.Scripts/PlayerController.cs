@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     const float LAUNCH_FORCE = 300.0f;
     const float RAY_UP = 0.2f;
     const float RAY_DISTANCE = 1.5f;
+
+    const float TIME_WALK = 1.25f;
     #endregion
 
     #region Public
@@ -43,11 +45,16 @@ public class PlayerController : MonoBehaviour
     Vector2 move;
     bool isInvincible;
     bool isHealing;
+    bool isDoneWalkClip;
+    float timerWalk;
     float damageCooldown;
     float healingCooldown;
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
     AudioSource audioSource;
+    [SerializeField] AudioClip projectileClip;
+    [SerializeField] AudioClip gotHitClip;
+    [SerializeField] AudioClip pWalkClip;
     #endregion
 
     #region Method
@@ -61,6 +68,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         currentHealth = maxHealth;
+        isDoneWalkClip = true;
     }
 
     void Update()
@@ -75,6 +83,20 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Look X", moveDirection.x);
         animator.SetFloat("Look Y", moveDirection.y);
         animator.SetFloat("Speed", move.magnitude);
+        if ((move.magnitude == 1) && isDoneWalkClip)
+        {
+            PlaySound(pWalkClip);
+            isDoneWalkClip = false;
+            timerWalk = TIME_WALK;
+        }
+        if (timerWalk > 0)
+        {
+            timerWalk -= Time.deltaTime;
+            if (timerWalk < 0)
+            {
+                isDoneWalkClip = true;
+            }
+        }
 
         //Debug.Log(move);
         if (isInvincible)
@@ -109,6 +131,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 position = (Vector2)rb2D.position + move * MoveSpeed * Time.deltaTime;
+        // PlaySound(pWalkClip);
         rb2D.MovePosition(position);
     }
 
@@ -121,6 +144,7 @@ public class PlayerController : MonoBehaviour
             {
                 return;
             }
+            PlaySound(gotHitClip);
             isInvincible = true;
             damageCooldown = timeInvincible;
         }
@@ -146,6 +170,7 @@ public class PlayerController : MonoBehaviour
         Projectile proj = projObject.GetComponent<Projectile>();
         proj.Launch(moveDirection, LAUNCH_FORCE);
         animator.SetTrigger("Launch");
+        PlaySound(projectileClip);
     }
 
     void FindFriend()
@@ -171,6 +196,11 @@ public class PlayerController : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
+    }
+
+    public void PlayGotHitSound()
+    {
+        PlaySound(gotHitClip);
     }
     #endregion
 }
