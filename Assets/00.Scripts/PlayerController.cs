@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     const float RAY_DISTANCE = 1.5f;
 
     const float TIME_WALK = 1.25f;
+    const string QUEST_COMP = "Good Job!";
     #endregion
 
     #region Public
@@ -37,9 +38,15 @@ public class PlayerController : MonoBehaviour
     //     get { return currentHealth; }
     // }
     public int CurrentHealth => currentHealth;
+    public int FixedEnemy
+    {
+        get => fixedEnemy;
+        set => fixedEnemy = value;
+    }
     #endregion
 
     #region Private
+    int fixedEnemy;
     int currentHealth;
     Rigidbody2D rb2D;
     Vector2 move;
@@ -55,6 +62,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip projectileClip;
     [SerializeField] AudioClip gotHitClip;
     [SerializeField] AudioClip pWalkClip;
+    [SerializeField] AudioClip questEndClip;
+    
     #endregion
 
     #region Method
@@ -69,6 +78,8 @@ public class PlayerController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         currentHealth = maxHealth;
         isDoneWalkClip = true;
+        // 씬에 있는 enemy 수를 fixedEnemy에 넣기
+        fixedEnemy = GameObject.FindGameObjectsWithTag("ENEMY").Length;
     }
 
     void Update()
@@ -182,6 +193,13 @@ public class PlayerController : MonoBehaviour
             NPCController npc = hit.collider.GetComponent<NPCController>();
             if (npc != null)
             {
+                // Check Quest Complete
+                if (FixedEnemy >= 0)
+                {
+                    UIHandler.instance.DisplayDialogue(QUEST_COMP);
+                    PlaySound(questEndClip);
+                    return;
+                }
                 if (npc.talkStr == string.Empty)
                 {
                     UIHandler.instance.DisplayDialogue();

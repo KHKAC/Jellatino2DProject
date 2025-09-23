@@ -8,6 +8,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] bool vertical;
     [SerializeField] float changeTime = 3.0f;
+    [SerializeField] AudioClip fixedClip;
+    [SerializeField] AudioClip[] gotHitClip;
+    [SerializeField] int enemyHealth = 3;
+    [SerializeField] PlayerController playerCtrl;
+    [SerializeField] ParticleSystem smokeEffect;
     #endregion
 
     #region private
@@ -17,8 +22,6 @@ public class EnemyController : MonoBehaviour
     int direction = 1;
     bool broken = true;
     AudioSource audioSource;
-    [SerializeField] AudioClip fixedClip;
-    [SerializeField] AudioClip gotHitClip;
     #endregion
 
     void Start()
@@ -79,6 +82,12 @@ public class EnemyController : MonoBehaviour
 
     public void Fix()
     {
+        if (--enemyHealth > 0)
+        {
+            int index = Random.Range(0, gotHitClip.Length);
+            audioSource.PlayOneShot(gotHitClip[Random.Range(0, index)]);
+            return;
+        }
         // 적이 파괴되는 경우는 아래 주석을 사용
         // Destroy(gameObject);
         broken = false;
@@ -86,6 +95,8 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Fixed");
         audioSource.Stop();
         audioSource.PlayOneShot(fixedClip);
+        playerCtrl.FixedEnemy--;
+        smokeEffect.Stop();
     }
 
     public void PlaySound(AudioClip clip)
