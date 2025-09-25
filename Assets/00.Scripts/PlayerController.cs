@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip gotHitClip;
     [SerializeField] AudioClip pWalkClip;
     [SerializeField] AudioClip questEndClip;
-    
+
     #endregion
 
     #region Method
@@ -80,6 +80,7 @@ public class PlayerController : MonoBehaviour
         isDoneWalkClip = true;
         // 씬에 있는 enemy 수를 fixedEnemy에 넣기
         fixedEnemy = GameObject.FindGameObjectsWithTag("ENEMY").Length;
+        Debug.Log(fixedEnemy);
     }
 
     void Update()
@@ -175,7 +176,7 @@ public class PlayerController : MonoBehaviour
         UIHandler.instance.SetHealthValue(currentHealth / (float)maxHealth);
     }
 
-    void Launch()
+    public void Launch()
     {
         GameObject projObject = Instantiate(projPrefab, rb2D.position + Vector2.up * LAUNCH_UP, Quaternion.identity);
         Projectile proj = projObject.GetComponent<Projectile>();
@@ -184,7 +185,7 @@ public class PlayerController : MonoBehaviour
         PlaySound(projectileClip);
     }
 
-    void FindFriend()
+    public void FindFriend()
     {
         RaycastHit2D hit = Physics2D.Raycast(
             rb2D.position + Vector2.up * RAY_UP, moveDirection, RAY_DISTANCE, LayerMask.GetMask("NPC"));
